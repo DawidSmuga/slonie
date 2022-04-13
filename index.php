@@ -10,6 +10,7 @@
 
 class Elephants
 {
+    public const DEFAULT_FILE = 'slo1.in';
     private int $elephantsCount;
     private int $lightest;
     private int $heaviest;
@@ -101,10 +102,16 @@ class Elephants
 }
 
 try {
+
     // create new object
     $elephant = new Elephants();
     // if CLI you can choose file by -> php index.php 'file_name.in'
-    $file = $argv[1] ?? 'slo1.in'; // <- if not, will be loaded default 
+    if (php_sapi_name() == 'cli')
+        $file = $argv[1] ?? Elephants::DEFAULT_FILE; // <- if not, will be loaded default 
+    // if browser you can pass file name by get
+    else
+        $file = $_GET['filename'] ??  Elephants::DEFAULT_FILE; // <- if not, will be loaded default 
+
     $elephant->loadFile($file);
     // display result 
     echo $elephant->resolve();
